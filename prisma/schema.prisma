@@ -1,0 +1,137 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Artist {
+  id                String   @id @default(cuid())
+  name              String
+  slug              String   @unique
+  musicbrainzArtistId String @unique
+  type              String   // 'group' or 'solo'
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  albums            Album[]
+  works             Work[]
+  
+  @@index([slug])
+  @@index([type])
+}
+
+model Work {
+  id                String    @id @default(cuid())
+  mbReleaseGroupId  String    @unique // MusicBrainz release-group ID
+  discogsMainId    String?   // Discogs master ID
+  discogsUrl        String?
+  title             String
+  type              String?   // Album, EP, Single, etc.
+  firstReleaseDate  String?
+  artistId          String
+  primaryImageUrl   String?
+  tracklistJson     String?   // JSON array of tracks
+  lastSyncedAt      DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  artist            Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  versions          Version[]
+  
+  @@index([artistId])
+  @@index([discogsMainId])
+  @@index([type])
+}
+
+model Version {
+  id                      String    @id @default(cuid())
+  mbReleaseId             String    @unique // MusicBrainz release ID
+  workId                  String
+  discogsReleaseId        String?
+  discogsUrl              String?
+  discogsMarketplaceUrl   String?
+  country                 String?
+  releaseDate             String?
+  formatJson              String?   // JSON array of formats
+  labelsJson              String?   // JSON array of labels
+  identifiersJson         String?   // JSON array of barcodes, etc.
+  notes                   String?
+  imageUrlsJson           String?   // JSON array of image URLs
+  lastSyncedAt            DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  
+  work                    Work      @relation(fields: [workId], references: [id], onDelete: Cascade)
+  
+  @@index([workId])
+  @@index([discogsReleaseId])
+}
+
+model MappingAudit {
+  id                String    @id @default(cuid())
+  entityType        String    // 'work' or 'version'
+  mbid              String
+  discogsId         String?
+  matchConfidence   Float
+  matchMethod       String    // 'mb_url' | 'strict_search' | 'manual_override'
+  matchedAt         DateTime  @default(now())
+  
+  @@index([mbid])
+  @@index([discogsId])
+}
+
+model Album {
+  id              String    @id @default(cuid())
+  mbid            String    @unique // MusicBrainz release-group ID
+  title           String
+  artistId        String
+  artistCredit    String
+  firstReleaseDate String?
+  primaryType     String?   // Album, EP, etc.
+  secondaryTypes  String?   // Compilation, Live, etc. (JSON array as string)
+  coverArtUrl     String?
+  backCoverArtUrl String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  artist          Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  tracks          Track[]
+  releases        Release[]
+  
+  @@index([artistId])
+  @@index([primaryType])
+  @@index([firstReleaseDate])
+}
+
+model Track {
+  id          String  @id @default(cuid())
+  albumId     String
+  position    Int
+  title       String
+  length      Int?    // in milliseconds
+  
+  album       Album   @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  
+  @@index([albumId])
+}
+
+model Release {
+  id          String   @id @default(cuid())
+  albumId     String
+  mbid        String   @unique // MusicBrainz release ID
+  title       String
+  date        String?
+  country     String?
+  label       String?
+  catalogNum  String?
+  format      String?  // CD, Vinyl, etc.
+  
+  album       Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  
+  @@index([albumId])
+}

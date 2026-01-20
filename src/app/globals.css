@@ -1,0 +1,357 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --font-heading: var(--font-crimson);
+  --font-body: var(--font-inter);
+  --purple-cow: #6B5B8E;
+  
+  /* Editorial Design System */
+  --max-content-width: 1200px;
+  --max-reading-width: 720px;
+  --max-album-width: 900px;
+  
+  /* Editorial Spacing (generous, breathable) */
+  --space-section: 4rem;
+  --space-content: 2rem;
+  --space-compact: 1rem;
+  
+  /* Typography Scale (3 sizes only) */
+  --text-display: 2.5rem;      /* Album titles */
+  --text-body: 1rem;           /* Main content */
+  --text-small: 0.875rem;      /* Metadata */
+  
+  /* Line Heights */
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+  --leading-loose: 1.8;
+  
+  /* Border Radius (consistent) */
+  --radius: 2px;
+  
+  /* Shadows (subtle, editorial) */
+  --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lifted: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --purple-cow: #8B7BA8;
+    --shadow-soft: 0 2px 8px rgba(255, 255, 255, 0.05);
+    --shadow-lifted: 0 4px 16px rgba(255, 255, 255, 0.08);
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-normal);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+}
+
+h1 {
+  font-size: var(--text-display);
+}
+
+h2 {
+  font-size: 1.875rem;
+}
+
+/* Editorial Layout Classes */
+.editorial-container {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.reading-container {
+  max-width: var(--max-reading-width);
+  margin: 0 auto;
+}
+
+.album-container {
+  max-width: var(--max-album-width);
+  margin: 0 auto;
+}
+
+.section-spacing {
+  margin-bottom: var(--space-section);
+}
+
+.content-spacing {
+  margin-bottom: var(--space-content);
+}
+
+/* Typography Utilities */
+.text-display {
+  font-size: var(--text-display);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+}
+
+.text-metadata {
+  font-size: var(--text-small);
+  color: #666;
+  line-height: var(--leading-loose);
+}
+
+@media (prefers-color-scheme: dark) {
+  .text-metadata {
+    color: #999;
+  }
+}
+
+/* Monospaced Track Numbers */
+.track-number {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: var(--text-small);
+  color: #999;
+  min-width: 2.5rem;
+  display: inline-block;
+}
+
+/* Collapsible Sections */
+.collapsible-trigger {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.collapsible-trigger:hover {
+  color: var(--purple-cow);
+}
+
+.collapsible-content {
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.collapsible-content.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Reading Mode */
+.reading-mode header,
+.reading-mode footer,
+.reading-mode .breadcrumb {
+  display: none;
+}
+
+.reading-mode .album-container {
+  max-width: var(--max-reading-width);
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+
+.reading-mode h1 {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.reading-mode h2 {
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Era Labels */
+.era-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: var(--text-small);
+  font-weight: 500;
+  border-radius: var(--radius);
+  background: rgba(107, 91, 142, 0.1);
+  color: var(--purple-cow);
+  border: 1px solid rgba(107, 91, 142, 0.2);
+}
+
+/* Trust Signals */
+.source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: var(--radius);
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #e0e0e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .source-badge {
+    background: #1a1a1a;
+    color: #999;
+    border-color: #333;
+  }
+}
+
+.copy-button {
+  padding: 0.375rem 0.75rem;
+  font-size: var(--text-small);
+  border: 1px solid #ddd;
+  border-radius: var(--radius);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copy-button:hover {
+  background: #f5f5f5;
+  border-color: var(--purple-cow);
+}
+
+.copy-button:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  .copy-button {
+    background: #1a1a1a;
+    border-color: #333;
+    color: #ededed;
+  }
+  
+  .copy-button:hover {
+    background: #2a2a2a;
+  }
+}
+
+/* Format Icons */
+.format-icon {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0.6;
+}
+
+/* Sticky Elements */
+.sticky-track-numbers {
+  position: sticky;
+  top: 0;
+  background: var(--background);
+  z-index: 10;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Comparison View */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.comparison-highlight {
+  background: rgba(107, 91, 142, 0.08);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius);
+}
+
+@media (max-width: 768px) {
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes discover-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+.discover-moment {
+  position: relative;
+}
+
+.discover-moment::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--purple-cow);
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.discover-moment.pulse::after {
+  animation: discover-pulse 1.2s ease-out;
+}
+
+.purple-accent {
+  color: var(--purple-cow);
+}
+
+.purple-underline {
+  position: relative;
+}
+
+.purple-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--purple-cow);
+  transition: width 0.3s ease-out;
+}
+
+.purple-underline:hover::after {
+  width: 100%;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Archival design overrides */
+body {
+  background-color: #fafafa;
+  color: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #0a0a0a;
+    color: #fafafa;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.album-card {
+  transition: transform 0.2s;
+}
+
+.album-card:hover {
+  transform: scale(1.05);
+}
