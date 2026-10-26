@@ -102,7 +102,7 @@ The full sync is running in the background and will populate all works/versions 
 Your `.env` file now contains:
 ```
 DATABASE_URL="file:./dev.db"
-DISCOGS_TOKEN="kQjYNYcORaEZqglGCdzlhZaVjhbSlYdqxPcwqRcd"
+DISCOGS_TOKEN="YOUR_DISCOGS_TOKEN_HERE"
 ```
 
 ## 🎯 Next Steps
